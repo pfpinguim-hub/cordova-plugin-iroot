@@ -153,7 +153,7 @@ public class InternalRootDetection {
 
             // LOG.d(Constants.LOG_TAG, String.format("[isExistBuildTags] buildTags: %s", buildTags));
 
-            result = (buildTags != null) && buildTags.contains("test-keys");
+            result = (buildTags != null) && buildTags.contains("test-keys") || buildTags.contains("dev-keys"));;
         } catch (Exception e) {
             LOG.e(Constants.LOG_TAG, String.format("[isExistBuildTags] Error: %s", e.getMessage()));
         }
@@ -313,12 +313,20 @@ public class InternalRootDetection {
              || Build.MODEL.contains("Android SDK built for x86")
              || Build.BOARD.equals("QC_Reference_Phone") //bluestacks
              || Build.HOST.startsWith("Build"); //MSI App Player
-
+         
+        boolean checkModernEmulator = Build.MODEL.startsWith("sdk_gphone")
+            || Build.PRODUCT.startsWith("sdk_gphone")
+            || Build.DEVICE.startsWith("emu64")
+            || Build.BOARD.contains("goldfish")
+            || Build.BOARD.contains("ranchu")
+            || Build.HARDWARE.contains("goldfish")
+            || Build.HARDWARE.contains("ranchu");
+         
          boolean checkGenymotion = Build.MANUFACTURER.contains("Genymotion");
          boolean checkGeneric = Build.FINGERPRINT.startsWith("generic") || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"));
          boolean checkGoogleSDK = Build.MODEL.contains("google_sdk") || "google_sdk".equals(Build.PRODUCT);
 
-         boolean result = simpleCheck || checkGenymotion || checkGeneric || checkGoogleSDK;
+         boolean result = simpleCheck || checkGenymotion || checkGeneric || checkGoogleSDK || checkModernEmulator;
 
          LOG.d(
              Constants.LOG_TAG,
@@ -328,7 +336,8 @@ public class InternalRootDetection {
                  simpleCheck,
                  checkGenymotion,
                  checkGeneric,
-                 checkGoogleSDK
+                 checkGoogleSDK,
+                 checkModernEmulator
              )
          );
 
