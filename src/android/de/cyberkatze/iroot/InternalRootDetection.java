@@ -153,7 +153,8 @@ public class InternalRootDetection {
 
             // LOG.d(Constants.LOG_TAG, String.format("[isExistBuildTags] buildTags: %s", buildTags));
 
-            result = (buildTags != null) && buildTags.contains("test-keys") || buildTags.contains("dev-keys"));;
+           result = (buildTags != null) && (buildTags.contains("test-keys") || buildTags.contains("dev-keys"));
+
         } catch (Exception e) {
             LOG.e(Constants.LOG_TAG, String.format("[isExistBuildTags] Error: %s", e.getMessage()));
         }
